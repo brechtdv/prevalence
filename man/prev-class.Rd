@@ -45,15 +45,32 @@ SE <- list(dist = "uniform", min = 0.60, max = 1.00)
 SP <- list(dist = "uniform", min = 0.75, max = 1.00)
 TP <- truePrev(x = 142, n = 742, SE = SE, SP = SP)
 
-## Show the fitted model
-TP@model
-
 ## Summarize estimates per chain
 summary(TP)
 
 ## Diagnostic plots
 par(mfrow = c(2, 2))
 plot(TP)
+
+## Use 'str()' to see the structure of object TP
+str(TP)
+
+## Every slot can be accessed using the '@' operator
+TP@par          # input parameters
+TP@model        # fitted model
+TP@mcmc         # simulated true prevalences
+TP@diagnostics  # DIC and BGR
+
+## TP@mcmc inherits from class 'mcmc.list' in coda package
+## List all available methods for this class
+methods(class = "mcmc.list")
+
+## See library(help = "coda") for more available functions
+## For instance, plot(TP) shows a combination of the following
+densplot(TP@mcmc)
+traceplot(TP@mcmc)
+gelman.plot(TP@mcmc)
+autocorr.plot(TP@mcmc)
 }
 
 \keyword{classes}

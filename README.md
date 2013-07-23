@@ -16,3 +16,4 @@ To install the development version of the prevalence package, it is easiest to u
     install.packages("devtools")  # if needed..
     library(devtools)
     install_github("prevalence", "brechtdv")
+	library(prevalence)

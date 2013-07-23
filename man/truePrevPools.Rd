@@ -9,8 +9,8 @@ Bayesian estimation of true prevalence from apparent prevalence obtained by test
 
 \usage{
 truePrevPools(x, n, SE = 1, SP = 1, prior = c(1, 1), conf.level = 0.95,
-  nchains = 2, burnin = 5000, update = 10000,
-  verbose = FALSE, plot = FALSE)
+              nchains = 2, burnin = 5000, update = 10000,
+              verbose = FALSE, plot = FALSE)
 }
 
 \arguments{
@@ -18,11 +18,11 @@ truePrevPools(x, n, SE = 1, SP = 1, prior = c(1, 1), conf.level = 0.95,
   \item{n}{The vector of pool sizes}
   \item{SE, SP}{The prior distribution for sensitivity (SE) and specificity (SP);
     see 'Details' below for specification of these distributions}
-  \item{prior}{The parameters of the prior Beta distribution for true prevalence}
-  \item{conf.level}{The confidence level used in the construction of the confidence interval}
+  \item{prior}{The parameters of the prior Beta distribution for true prevalence; defaults to \code{c(1, 1)}}
+  \item{conf.level}{The confidence level used in the construction of the confidence interval; defaults to 0.95}
   \item{nchains}{The number of chains used in the estimation process; \code{'n'} must be \eqn{\ge 2}}
-  \item{burnin}{The number of discarded model iterations}
-  \item{update}{The number of withheld model iterations}
+  \item{burnin}{The number of discarded model iterations; defaults to 5000}
+  \item{update}{The number of withheld model iterations; defaults to 10000}
   \item{verbose}{Logical flag, indicating if JAGS process output should be printed to the R console; 
     defaults to \code{FALSE}}
   \item{plot}{Logical flag, indicating if diagnostic plots should be given; defaults to \code{FALSE}}
@@ -96,10 +96,19 @@ Markov chain Monte Carlo sampling in \code{truePrevPools} is performed by \pkg{J
 }}
 
 \seealso{
-  \pkg{\link[coda:mcmc]{coda}} for various functions that can be applied to the \code{prev@mcmc.list} object\cr
-  \code{\link{truePrev}}: estimate true prevalence from apparent prevalence obtained by testing \emph{pooled} samples\cr
-  \code{\link{betaPERT}}: Calculate the parameters of a Beta-PERT distribution\cr
-  \code{\link{betaExpert}}: Calculate the parameters of a Beta distribution based on expert opinion
+  \pkg{\link[coda:mcmc]{coda}}
+  for various functions that can be applied to
+  the \code{prev@mcmc.list} object\cr
+  \code{\link{truePrev}}:
+  estimate true prevalence from apparent prevalence
+  obtained by testing \emph{individual} samples with a single test\cr
+  \code{\link{truePrevMulti}}:
+  estimate true prevalence from apparent
+  prevalence obtained by testing \emph{individual} samples with multiple tests\cr
+  \code{\link{betaPERT}}:
+  calculate the parameters of a Beta-PERT distribution\cr
+  \code{\link{betaExpert}}:
+  calculate the parameters of a Beta distribution based on expert opinion
 }
 
 \examples{

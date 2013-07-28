@@ -13,7 +13,7 @@ function(d){
 
     ## check distribution
     if (!any(c("fixed", "dunif", "dbeta", "dpert") == dst))
-      stop(paste("Distribution must be any of",
+      stop(paste("Distribution must be either",
                  "'fixed', 'dunif', 'dbeta' or 'dpert'"))
 
     ## check length of par

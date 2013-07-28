@@ -1,8 +1,8 @@
 Package: prevalence
 Type: Package
 Title: The prevalence package
-Version: 0.1.2
-Date: 2013-07-23
+Version: 0.1.3
+Date: 2013-07-28
 Authors@R: c(person("Brecht", "Devleesschauwer",
              role = c("aut", "cre"), email = "Brecht.Devleesschauwer@UGent.be"),
 			 person("Paul", "Torgerson", role = "aut"),

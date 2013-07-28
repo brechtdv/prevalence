@@ -5,16 +5,16 @@ Version: 0.1.3
 Date: 2013-07-28
 Authors@R: c(person("Brecht", "Devleesschauwer",
              role = c("aut", "cre"), email = "Brecht.Devleesschauwer@UGent.be"),
-			 person("Paul", "Torgerson", role = "aut"),
-			 person("Johannes", "Charlier", role = "aut"),
-			 person("Bruno", "Levecke", role = "aut"),
-			 person("Nicolas", "Praet", role = "aut"),
-			 person("Pierre", "Dorny", role = "aut"),
-			 person("Dirk", "Berkvens", role = "aut"),
-			 person("Niko", "Speybroeck", role = "aut"))
+             person("Paul", "Torgerson", role = "aut"),
+             person("Johannes", "Charlier", role = "aut"),
+             person("Bruno", "Levecke", role = "aut"),
+             person("Nicolas", "Praet", role = "aut"),
+             person("Pierre", "Dorny", role = "aut"),
+             person("Dirk", "Berkvens", role = "aut"),
+             person("Niko", "Speybroeck", role = "aut"))
 Author: Brecht Devleesschauwer [aut, cre], Paul Torgerson [aut],
         Johannes Charlier [aut], Bruno Levecke [aut], Nicolas Praet [aut],
-		Pierre Dorny [aut], Dirk Berkvens [aut], Niko Speybroeck [aut]
+        Pierre Dorny [aut], Dirk Berkvens [aut], Niko Speybroeck [aut]
 Maintainer: Brecht Devleesschauwer <Brecht.Devleesschauwer@UGent.be>
 BugReports: https://github.com/brechtdv/prevalence/issues
 Description: Tools for prevalence assessment studies. IMPORTANT: the truePrev functions in the prevalence package call on JAGS (Just Another Gibbs Sampler), which therefore has to be available on the user's system. JAGS can be downloaded from http://mcmc-jags.sourceforge.net/

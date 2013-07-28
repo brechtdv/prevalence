@@ -19,8 +19,8 @@ truePrev(x, n, SE = 1, SP = 1, prior = c(1, 1), conf.level = 0.95,
   \item{n}{The sample size}
   \item{SE, SP}{The prior distribution for sensitivity (SE) and specificity 
   SP); see 'Details' below for specification of these distributions}
-  \item{prior}{The parameters of the prior Beta distribution for true prevalence;
-  defaults to \code{c(1, 1)}}
+  \item{prior}{The parameters of the prior Beta distribution for true
+  prevalence; defaults to \code{c(1, 1)}}
   \item{conf.level}{The confidence level used in the construction of the
   confidence interval; defaults to 0.95}
   \item{nchains}{The number of chains used in the estimation process;
@@ -54,7 +54,7 @@ truePrev(x, n, SE = 1, SP = 1, prior = c(1, 1), conf.level = 0.95,
   \code{"beta"}, \code{"pert"}, or \code{"beta-expert"}, with \code{"fixed"}
   as the default.
 
-  Distribution parameters must be specified in a \emph{named} \code{list()}
+  Distribution parameters can be specified in a \emph{named} \code{list()}
   as follows:
 
 \itemize{
@@ -63,17 +63,27 @@ truePrev(x, n, SE = 1, SP = 1, prior = c(1, 1), conf.level = 0.95,
   \item{\strong{Beta:  }}{\code{list(dist = "beta", alpha, beta)}}
   \item{\strong{Beta-PERT:  }}{\code{list(dist = "pert", method, a, m, b, k)}\cr
     \code{'method'} must be \code{"Classic"} or \code{"Vose"};\cr
-    \code{'a'} denotes the pessimistic (minimum) estimate, \code{'m'} the most likely estimate, and \code{'b'} the optimistic (maximum) estimate;\cr
+    \code{'a'} denotes the pessimistic (minimum) estimate, \code{'m'} the most
+	likely estimate, and \code{'b'} the optimistic (maximum) estimate;\cr
     \code{'k'} denotes the scale parameter.\cr
     See \link{betaPERT} for more information on Beta-PERT parametrization.}
   \item{\strong{Beta-Expert:  }}{\code{list(dist = "beta-expert", mode, mean, lower, upper, p)}\cr
     \code{'mode'} denotes the most likely estimate, \code{'mean'} the mean estimate;\cr
     \code{'lower'} denotes the lower bound, \code{'upper'} the upper bound;\cr
     \code{'p'} denotes the confidence level of the expert.\cr
-	Only \code{mode} or \code{mean} should be specified; \code{lower} and \code{upper} can be specified together or alone.\cr
+	Only \code{mode} or \code{mean} should be specified;
+	\code{lower} and \code{upper} can be specified together or alone.\cr
     See \link{betaExpert} for more information on Beta-Expert parametrization.}
 }
-}
+
+  For Uniform, Beta and Beta-PERT distributions, BUGS-style short-hand notation
+  is also allowed:
+  
+\itemize{
+  \item{\strong{Uniform: }}{\code{~dunif(min, max)}}
+  \item{\strong{Beta: }}{\code{~dbeta(alpha, beta)}}
+  \item{\strong{Beta-PERT: }}{\code{~dpert(min, mode, max)}}
+}}
 
 \value{
 An object of class \link[prevalence:prev-class]{prev}.
@@ -94,11 +104,13 @@ Markov chain Monte Carlo sampling in \code{truePrev} is performed by
 \itemize{
   \item{
     Speybroeck N, Devleesschauwer B, Joseph L, Berkvens D (2012)
-    \emph{Misclassification errors in prevalence estimation: Bayesian handling with care.}
+    \emph{Misclassification errors in prevalence estimation:
+	      Bayesian handling with care.}
 	International Journal of Public Health
 	}
   \item{
-    Online Shiny application: \url{http://users.ugent.be/~bdvleess/R/prevalence/shiny/}
+    Online Shiny application:
+	\url{http://users.ugent.be/~bdvleess/R/prevalence/shiny/}
 	}
   }
 }
@@ -126,6 +138,11 @@ Markov chain Monte Carlo sampling in \code{truePrev} is performed by
 ## Model SE and SP based on literature data
 ## Sensitivity ranges uniformly between 60% and 100%
 ## Specificity ranges uniformly between 75% and 100%
+#> BUGS-style:
+truePrev(x = 142, n = 742,
+         SE = ~dunif(0.60, 1.00), SP = ~dunif(0.75, 1.00))
+
+#> list-style:
 SE <- list(dist = "uniform", min = 0.60, max = 1.00)
 SP <- list(dist = "uniform", min = 0.75, max = 1.00)
 truePrev(x = 142, n = 742, SE = SE, SP = SP)

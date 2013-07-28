@@ -15,8 +15,8 @@
   \tabular{ll}{
     Package: \tab prevalence\cr
     Type: \tab Package\cr
-    Version: \tab 0.1.2\cr
-    Date: \tab 2013-07-23\cr
+    Version: \tab 0.1.3\cr
+    Date: \tab 2013-07-28\cr
     License: \tab GNU >= 2\cr
 }
 

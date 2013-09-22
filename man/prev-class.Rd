@@ -70,7 +70,7 @@ par(mfrow = c(1, 1))
 densplot(TP)
 traceplot(TP)
 gelman.plot(TP)
-trace.plot(TP)
+autocorr.plot(TP)
 
 ## Use 'str()' to see the structure of object TP
 str(TP)

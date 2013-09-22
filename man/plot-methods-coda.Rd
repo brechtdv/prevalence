@@ -22,8 +22,6 @@
 
 \S4method{traceplot}{prev}(x, exclude_fixed = TRUE, \dots)
 
-\S4method{gelman.plot}{prev}(x, \dots)
-
 \S4method{autocorr.plot}{prev}(x, exclude_fixed = TRUE, chain = 1, \dots)
 }
 

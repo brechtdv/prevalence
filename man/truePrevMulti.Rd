@@ -174,6 +174,7 @@ Markov chain Monte Carlo sampling in \code{truePrevMulti} is performed by
 }
 
 \examples{
+\dontrun{
 ## ===================================================== ##
 ## 2-TEST EXAMPLE: Campylobacter                         ##
 ## ----------------------------------------------------- ##
@@ -181,9 +182,9 @@ Markov chain Monte Carlo sampling in \code{truePrevMulti} is performed by
 ## -> T1 = enrichment culture                            ##
 ## -> T2 = direct plating                                ##
 ## The following assumption were made:                   ##
-## -> TP is larger than 45% and smaller than 80%         ##
-## -> SE1 must lie within 24% and 50%                    ##
-## -> SP1 and SP2 both equal 100%                        ##
+## -> TP is larger than 45\% and smaller than 80\%         ##
+## -> SE1 must lie within 24\% and 50\%                    ##
+## -> SP1 and SP2 both equal 100\%                        ##
 ## -> beta(30, 12) describes P(T2+|D+,T1+)               ##
 ## The following results were obtained:                  ##
 ## -> 341 samples T1-,T2-                                ##
@@ -263,9 +264,9 @@ autocorr.plot(campy)
 ## -> T2 = direct microscopy                             ##
 ## -> T3 = SNAP immunochromatography                     ##
 ## The following assumption were made:                   ##
-## -> TP is smaller than 20%                             ##
-## -> SE1 must be higher than 80%                        ##
-## -> SP1 must be higher than 90%                        ##
+## -> TP is smaller than 20\%                             ##
+## -> SE1 must be higher than 80\%                        ##
+## -> SP1 must be higher than 90\%                        ##
 ## The following results were obtained:                  ##
 ## -> 220 samples T1-,T2-,T3-                            ##
 ## ->   3 samples T1-,T2-,T3+                            ##
@@ -311,4 +312,4 @@ giardia
 ## coda densplots
 par(mfcol = c(2, 4))
 densplot(giardia, col = "red")
-}
+}}

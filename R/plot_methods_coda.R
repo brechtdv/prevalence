@@ -78,6 +78,37 @@ setMethod("traceplot", "prev",
   }
 )
 
+setMethod("gelman.plot", "prev",
+  function(x, ...){
+    ## guess which function generated 'x'
+    multi <- length(x@par$prior) > 2
+
+    ## calculate number of plots
+    if (multi){
+      is_fixed <- sapply(x@mcmc, function(x) var(unlist(x)) == 0)
+      is_fixed <- head(is_fixed, -1)
+      n <- length(x@mcmc) - sum(is_fixed) - 1
+      N <- which(!is_fixed)
+    }
+
+    ## define 'ask'
+    ask_old <- par("ask")
+    ask_new <- ifelse(multi && prod(par("mfrow")) < n, TRUE, FALSE)
+    devAskNewPage(ask_new)
+    on.exit(devAskNewPage(ask_old))
+
+    ## density plots
+    if (multi){
+      for (i in N)
+        gelman.plot(x@mcmc[[i]],
+                    main = paste("BGR plot of", names(x@mcmc)[i]),
+                    ask = TRUE, auto.layout = FALSE, ...)
+    } else {
+      gelman.plot(x@mcmc, ask = FALSE, ...)
+    }
+  }
+)
+
 setMethod("autocorr.plot", "prev",
   function(x, exclude_fixed = TRUE, chain = 1, ...){
     ## check inputs
@@ -119,37 +150,6 @@ setMethod("autocorr.plot", "prev",
                       ask = TRUE, auto.layout = FALSE, ...)
     } else {
       autocorr.plot(x@mcmc[[chain]], ...)
-    }
-  }
-)
-
-setMethod("gelman.plot", "prev",
-  function(x, ...){
-    ## guess which function generated 'x'
-    multi <- length(x@par$prior) > 2
-
-    ## calculate number of plots
-    if (multi){
-      is_fixed <- sapply(x@mcmc, function(x) var(unlist(x)) == 0)
-      is_fixed <- head(is_fixed, -1)
-      n <- length(x@mcmc) - sum(is_fixed) - 1
-      N <- which(!is_fixed)
-    }
-
-    ## define 'ask'
-    ask_old <- par("ask")
-    ask_new <- ifelse(multi && prod(par("mfrow")) < n, TRUE, FALSE)
-    devAskNewPage(ask_new)
-    on.exit(devAskNewPage(ask_old))
-
-    ## density plots
-    if (multi){
-      for (i in N)
-        gelman.plot(x@mcmc[[i]],
-                    main = paste("BGR plot of", names(x@mcmc)[i]),
-                    ask = TRUE, auto.layout = FALSE, ...)
-    } else {
-      gelman.plot(x@mcmc, ask = FALSE, ...)
     }
   }
 )

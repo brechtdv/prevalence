@@ -1,5 +1,5 @@
 checkSeSp <-
-function(x){
+function(x, type = "prob"){
   distr <- NULL
   param <- NULL
 
@@ -8,7 +8,7 @@ function(x){
 
   if (length(x) == 1){
     distr <- "fixed"
-    if (x < 0 | x > 1)
+    if (type == "prob" && (x < 0 | x > 1))
       stop(paste("Parameter 'par' of fixed distribution must be",
                  "numeric value between 0 and 1"))
     param <- x
@@ -34,7 +34,7 @@ function(x){
       warning("A fixed distribution requires only 1 parameter")
     if (is.null(x$par))
       stop("Parameter 'par' not specified")
-    if (x$par < 0 | x$par > 1)
+    if (type == "prob" && (x$par < 0 | x$par > 1))
       stop(paste("Parameter 'par' of fixed distribution must be",
                  "numeric value between 0 and 1"))
     param <- x$par
@@ -50,7 +50,7 @@ function(x){
       stop("Parameter 'min' not specified")
     if (is.null(x$max))
       stop("Parameter 'max' not specified")
-    if (any(c(x$min, x$max) < 0) | any(c(x$min, x$max) > 1))
+    if (type == "prob" && (any(c(x$min, x$max) < 0) | any(c(x$min, x$max) > 1)))
       stop(paste("Parameters of uniform distribution must be",
                  "numeric values between 0 and 1"))
     if (x$min > x$max)
@@ -87,7 +87,7 @@ function(x){
     if (is.null(x$p))
       stop("Parameter 'p' not specified")
     target <- c(x$lower, x$upper)[c(!is.null(x$lower), !is.null(x$upper))]
-    if (any(c(best, x$p, x$target) < 0) | any(c(best, x$p, x$target) > 1))
+    if (type == "prob" && (any(c(best, x$p, x$target) < 0) | any(c(best, x$p, x$target) > 1)))
       stop(paste("Parameters of beta-expert distribution must be",
                  "numeric values between 0 and 1"))
     if (!is.null(x$lower))
@@ -125,7 +125,7 @@ function(x){
       stop("Parameter 'm' not specified")
     if (is.null(x$b))
       stop("Parameter 'b' not specified")
-    if (any(c(x$a, x$m, x$b) < 0) | any(c(x$a, x$m, x$b) > 1))
+    if (type == "prob" && (any(c(x$a, x$m, x$b) < 0) | any(c(x$a, x$m, x$b) > 1)))
       stop(paste("Parameters of PERT distribution must be",
                  "numeric values between 0 and 1"))
     if (x$a > x$m)

@@ -1,11 +1,11 @@
 ## BUGS-dist to list
 
 dist2list <-
-function(d){
+function(d, type){
   ## check if d is numeric value
   if (!is.na(suppressWarnings(as.numeric(d)))){
     x <- list(dist = "fixed", par = d)
-    out <- checkSeSp(x)
+    out <- checkSeSp(x, type)
   } else {
     ## extract distribution and parameters
     dst <- as.character(parse(text = d)[[1]])[1]
@@ -34,7 +34,7 @@ function(d){
                        alpha = par[1], beta = par[2]),
         "dpert" = list(dist = "pert",
                        a = par[1], m = par[2], b = par[3]))
-    out <- checkSeSp(x)
+    out <- checkSeSp(x, type)
   } 
 
   ## return distribution in list format

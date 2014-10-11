@@ -25,21 +25,26 @@ setMethod("print", "prev",
 
     ## get summary statistics from 'summary()'
     stats <- summary(x, conf.level)
-    if (!is.list(stats))
-      stats <- list(stats)
+    if (!is.list(stats)) stats <- list(stats)
 
     summary_row <- x@par$nchains + 1
     out <- t(sapply(stats, function(x) x[summary_row, c(1, 2, 3, 6, 7)]))
 
     if (multi){
-      n <- log(length(x@par$x), 2)
+      h <- log(length(x@par$x), 2)
+      method <-
+        ifelse(x@par$prior[[1]][[1]] == "TP", "covariance", "conditional")
+
       rownames(out) <-
-        c(" TP (%)",
-          paste(
-            paste(rep(c("SE", "SP"), times = n),
-                  rep(seq(n), each = 2),
-                  sep = ""),
-          "(%)"))
+        switch(method,
+               conditional = c(" TP (%)",
+                               paste(
+                                 paste(rep(c("SE", "SP"), times = h),
+                                       rep(seq(h), each = 2),
+                                       sep = ""),
+                                 "(%)")),
+               covariance = paste(get_nodes(h), "(%)", sep = " "))
+
     } else {
       rownames(out) <- "True prevalence (%)"
     }
@@ -48,8 +53,7 @@ setMethod("print", "prev",
     BGR <- x@diagnostics$BGR
 
     ## if multinomial, get bayesP
-    if (multi)
-      bayesP <- x@diagnostics$bayesP
+    if (multi) bayesP <- x@diagnostics$bayesP
 
     ## print 'out' dataframe
     print(round(100 * out, dig), ...)

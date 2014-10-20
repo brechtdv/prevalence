@@ -4,13 +4,13 @@ dist2list <-
 function(d, type) {
   ## check if d is numeric value
   if (!is.na(suppressWarnings(as.numeric(d)))) {
-    x <- list(dist = "fixed", par = d)
+    x <- list(dist = "fixed", par = as.numeric(d))
     out <- checkSeSp(x, type)
 
   } else {
     ## extract distribution and parameters
     dst <- as.character(parse(text = d)[[1]])[1]
-    par <- as.character(parse(text = d)[[1]])[-1]
+    par <- as.numeric(as.character(parse(text = d)[[1]])[-1])
 
     ## check distribution
     if (!any(c("fixed", "dunif", "dbeta", "dpert") == dst))

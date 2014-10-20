@@ -40,7 +40,9 @@ function(prior) {
     n <- length(prior) - 1
     priors_list <- vector("list", n)
     for (i in seq(n))
-      priors_list[[i]] <- checkSeSp(eval(parse(text = prior)[[i + 1]]))
+      priors_list[[i]] <-
+        checkSeSp(eval(parse(text = prior)[[i + 1]]),
+                  type = "prob")
   }
 
   ## if prior is defined as a function
@@ -49,7 +51,7 @@ function(prior) {
     priors_list0 <- vector("list", n)
     for (i in seq(n)) {
       priors_list0[[i]] <-
-        explode(as.character(prior[[i + 1]]), "conditional")
+        explode(as.character(prior[[i + 1]]), "conditional", h)
     }
 
     ## get indices from priors_list0
@@ -119,9 +121,12 @@ function(prior, h) {
     # check priors and put in list
     priors_list <- vector("list", n)
     for (i in seq(n)) {
+      xi <-
+        suppressWarnings(
+          as.numeric(substr(prior_names[i], 2, nchar(prior_names[i]))))
       type <-
         ifelse(substr(prior_names[i], 1, 1) %in% c("a", "b"),
-               cov_depth(h, as.numeric(substr(prior_names[i], 2, 2))),
+               cov_depth(h, xi),
                "prob")
       priors_list[[i]] <-
         list(prior_names[i],
@@ -143,7 +148,7 @@ function(prior, h) {
     priors_list <- vector("list", n)
     for (i in seq(n)) {
       priors_list[[i]] <-
-        explode(as.character(prior[[i + 1]]), "covariance")
+        explode(as.character(prior[[i + 1]]), "covariance", h)
     }
 
     ## check if all priors are defined
@@ -180,7 +185,7 @@ function(h, x) {
 ## Main explode function ---------------------------------------------------#
 
 explode <-
-function(x, method) {
+function(x, method, h) {
   ## create list of 2 (node & dist)
   priors <- vector("list", 2)
 
@@ -194,13 +199,16 @@ function(x, method) {
   explode_operator(x[1])
 
   ## define type
+  xi <-
+    suppressWarnings(
+      as.numeric(substr(priors[[1]], 3, nchar(priors[[1]])-1)))
   type <-
-    ifelse(strsplit(priors[[1]], "[", fixed = T)[[1]][1] %in% c("a", "b"),
-           "cov", "prob")
+    ifelse(substr(priors[[1]], 1, 1) %in% c("a", "b"),
+           cov_depth(h, xi),
+           "prob")
 
   ## extract distribution
   priors[[2]] <- explode_dist(x[3], type)
-
   return(priors)
 }
 

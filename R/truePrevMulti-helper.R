@@ -48,7 +48,8 @@ function(prior) {
     n <- length(prior) - 1
     priors_list0 <- vector("list", n)
     for (i in seq(n)) {
-      priors_list0[[i]] <- explode(as.character(prior[[i + 1]]), "cond")
+      priors_list0[[i]] <-
+        explode(as.character(prior[[i + 1]]), "conditional")
     }
 
     ## get indices from priors_list0
@@ -133,17 +134,24 @@ function(prior, h) {
 
 explode <-
 function(x, method) {
+  ## create list of 2 (node & dist)
   priors <- vector("list", 2)
+
+  ## extract node
   priors[[1]] <-
     switch(method,
            conditional = explode_theta(x[2]),
            covariance = explode_nodes(x[2]))
 
+  ## check if operator is correctly specified
   explode_operator(x[1])
 
+  ## define type
   type <-
     ifelse(strsplit(priors[[1]], "[", fixed = T)[[1]][1] %in% c("a", "b"),
            "cov", "prob")
+
+  ## extract distribution
   priors[[2]] <- explode_dist(x[3], type)
 
   return(priors)

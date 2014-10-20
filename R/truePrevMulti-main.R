@@ -162,9 +162,19 @@ function(x, n, prior, nchains, burnin, update, verbose) {
   names(mcmc.list_list) <- names[order]
 
   ## define diagnostics
+  # deviance information criterion
   DIC <- JAGSout$dic
-  BGR <- c(gelman.diag(mcmc.list_list$TP, autoburnin = FALSE)$psrf)
+
+  # bayes-p
   bayesP <- mean(unlist(mcmc.list_list$bayesP))
+
+  # brooks-gelman-rubin diagnostic
+  # exclude bayes-p and fixed nodes
+  exclude <-
+    c(which(colnames(mcmc.list[[1]]) == "bayesP"),
+      which(apply(mcmc.list[[1]], 2, sd) == 0))
+  gelman.diag(mcmc.list[, -exclude])
+  BGR <- gelman.diag(mcmc.list[, -exclude])
 
   ## define output
   out <-
@@ -175,8 +185,7 @@ function(x, n, prior, nchains, burnin, update, verbose) {
         model = model,
         mcmc = mcmc.list_list,
         diagnostics = list(DIC = DIC,
-                           BGR = data.frame(mean = BGR[1],
-                                            upperCL = BGR[2]),
+                           BGR = BGR,
                            bayesP = bayesP))
 
   ## return output
@@ -344,9 +353,19 @@ function(x, n, prior, nchains, burnin, update, verbose) {
   names(mcmc.list_list) <- names[order]
 
   ## define diagnostics
+  # deviance information criterion
   DIC <- JAGSout$dic
-  BGR <- c(gelman.diag(mcmc.list_list$TP, autoburnin = FALSE)$psrf)
+
+  # bayes-p
   bayesP <- mean(unlist(mcmc.list_list$bayesP))
+
+  # brooks-gelman-rubin diagnostic
+  # exclude bayes-p and fixed nodes
+  exclude <-
+    c(which(colnames(mcmc.list[[1]]) == "bayesP"),
+      which(apply(mcmc.list[[1]], 2, sd) == 0))
+  gelman.diag(mcmc.list[, -exclude])
+  BGR <- gelman.diag(mcmc.list[, -exclude])
 
   ## define output
   out <-
@@ -356,8 +375,7 @@ function(x, n, prior, nchains, burnin, update, verbose) {
         model = model,
         mcmc = mcmc.list_list,
         diagnostics = list(DIC = DIC,
-                           BGR = data.frame(mean = BGR[1],
-                                            upperCL = BGR[2]),
+                           BGR = BGR,
                            bayesP = bayesP))
 
   ## return output

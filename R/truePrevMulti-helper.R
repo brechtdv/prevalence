@@ -51,7 +51,7 @@ function(prior) {
     priors_list0 <- vector("list", n)
     for (i in seq(n)) {
       priors_list0[[i]] <-
-        explode(as.character(prior[[i + 1]]), "conditional", h)
+        explode(as.character(prior[[i + 1]]), "conditional")
     }
 
     ## get indices from priors_list0
@@ -185,7 +185,7 @@ function(h, x) {
 ## Main explode function ---------------------------------------------------#
 
 explode <-
-function(x, method, h) {
+function(x, method, h = NULL) {
   ## create list of 2 (node & dist)
   priors <- vector("list", 2)
 

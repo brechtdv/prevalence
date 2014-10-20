@@ -6,7 +6,7 @@ importFrom("coda", densplot)
 importFrom("coda", traceplot)
 importFrom("coda", autocorr.plot)
 
-export(truePrev, truePrevPools, truePrevMulti,
+export(truePrev, truePrevPools, truePrevMulti, truePrevMulti2,
        definition_x, definition_theta,
        betaPERT, betaExpert, propCI)
 

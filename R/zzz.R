@@ -52,13 +52,21 @@ setMethod("print", "prev",
     print(round(out, dig), ...)
 
     ## print diagnostic information
-    cat("\nBGR statistic = ", round(BGR[[1]], 4),
-        " (upper CL = ", round(BGR[[2]], 4), ")\n", sep = "")
-    cat("BGR values substantially above 1 indicate lack of convergence\n")
-    if (multi){
-      cat("Bayes-P statistic =", round(bayesP, 2), "\n")
-      cat("Bayes-P values substantially different from 0.5",
-          "indicate lack of convergence\n")
+    if (multi) {
+      cat("\nBGR statistic = ", round(BGR[[1]], 4),
+          " (upper CL = ", round(BGR[[2]], 4), ")\n", sep = "")
+      cat("BGR values substantially above 1 indicate lack of convergence\n")
+
+      if (method == "conditional") {
+        cat("Bayes-P statistic =", round(bayesP, 2), "\n")
+        cat("Bayes-P values substantially different from 0.5",
+            "indicate lack of convergence\n")
+      }
+
+    } else {
+      cat("\nBGR statistic = ", round(BGR[[1]], 4),
+          " (upper CL = ", round(BGR[[2]], 4), ")\n", sep = "")
+      cat("BGR values substantially above 1 indicate lack of convergence\n")
     }
   }
 )

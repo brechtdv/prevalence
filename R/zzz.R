@@ -11,15 +11,11 @@ setClass("prev",
 ##= Define S4 methods =====================================================
 setMethod("show", "prev",
   function(object)
-    print(object, object@par$conf.level)
+    print(object)
 )
 
 setMethod("print", "prev",
-  function(x, conf.level, dig = 3, ...){
-    ## get 'conf.level' from 'x', but allow to override
-    if (missing(conf.level))
-      conf.level <- x@par$conf.level
-
+  function(x, conf.level = 0.95, dig = 3, ...){
     ## guess which function generated 'x'
     multi <- length(x@par$prior) > 2
 
@@ -28,7 +24,7 @@ setMethod("print", "prev",
     if (!is.list(stats)) stats <- list(stats)
 
     summary_row <- x@par$nchains + 1
-    out <- t(sapply(stats, function(x) x[summary_row, c(1, 2, 3, 6, 7)]))
+    out <- t(sapply(stats, function(x) x[summary_row, c(1:4, 6:7)]))
 
     if (multi){
       h <- log(length(x@par$x), 2)
@@ -37,16 +33,13 @@ setMethod("print", "prev",
 
       rownames(out) <-
         switch(method,
-               conditional = c(" TP (%)",
-                               paste(
-                                 paste(rep(c("SE", "SP"), times = h),
-                                       rep(seq(h), each = 2),
-                                       sep = ""),
-                                 "(%)")),
-               covariance = paste(get_nodes(h), "(%)", sep = " "))
+               conditional = c(" TP",
+                               paste0(rep(c("SE", "SP"), times = h),
+                                      rep(seq(h), each = 2))),
+               covariance = get_nodes(h))
 
     } else {
-      rownames(out) <- "True prevalence (%)"
+      rownames(out) <- "True prevalence"
     }
 
     ## get BGR statistic
@@ -56,7 +49,7 @@ setMethod("print", "prev",
     if (multi) bayesP <- x@diagnostics$bayesP
 
     ## print 'out' dataframe
-    print(round(100 * out, dig), ...)
+    print(round(out, dig), ...)
 
     ## print diagnostic information
     cat("\nBGR statistic = ", round(BGR[[1]], 4),
@@ -71,11 +64,7 @@ setMethod("print", "prev",
 )
 
 setMethod("summary", "prev",
-  function(object, conf.level){
-    ## get 'conf.level' from 'object', but allow to override
-    if (missing(conf.level))
-      conf.level <- object@par$conf.level
-
+  function(object, conf.level = 0.95){
     ## derive lower and upper confidence level
     if (sum(object@par$x) == 0){
       p <- c(0, conf.level)
@@ -87,7 +76,7 @@ setMethod("summary", "prev",
       p <- c((1 - conf.level) / 2,
               1 - (1 - conf.level) / 2)
     }
-    ciLabel <- paste(100 * p, "%", sep = "")
+    ciLabel <- paste0(100 * p, "%")
 
     ## guess which function generated 'object'
     multi <- length(object@par$prior) > 2

@@ -1,3 +1,17 @@
+###=========================================================================#
+### S3 PRINT METHODS
+###=========================================================================#
+
+###=========================================================================#
+###== FUNCTIONS ============================================================#
+###-- print.betaPERT .................. S3 print method for 'betaPERT'
+###-- print.betaExpert ................ S3 print method for 'betaExpert'
+###-- print.prevModel ................. S3 print method for 'prevModel'
+
+
+## -------------------------------------------------------------------------#
+## S3 print method for class 'betaPERT' ------------------------------------#
+
 print.betaPERT <-
 function(x, conf.level, ...){
   ## summary statistics
@@ -23,6 +37,10 @@ function(x, conf.level, ...){
   print(out)
 }
 
+
+## -------------------------------------------------------------------------#
+## S3 print method for class 'betaExpert' ----------------------------------#
+
 print.betaExpert <-
 function(x, conf.level = .95, ...){
   ## summary statistics
@@ -46,7 +64,7 @@ function(x, conf.level = .95, ...){
   ci <- c(0, conf.level) + (1 - conf.level) / 2
   beta_lwr <- qbeta(ci[1], x$alpha, x$beta)
   beta_upr <- qbeta(ci[2], x$alpha, x$beta)
-  ciLabel <- paste(100 * ci, "%", sep = "")
+  ciLabel <- paste0(100 * ci, "%")
 
   ## create 'out' dataframe
   out <- data.frame(x$alpha, x$beta,
@@ -59,6 +77,10 @@ function(x, conf.level = .95, ...){
   ## print 'out' dataframe
   print(out)
 }
+
+
+## -------------------------------------------------------------------------#
+## S3 print method for class 'prevModel' -----------------------------------#
 
 print.prevModel <-
 function(x, ...){

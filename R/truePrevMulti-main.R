@@ -67,8 +67,8 @@ function(x, n, prior, nchains = 2, burnin = 10000, update = 10000,
 
   ## check prior
   if (missing(prior)) stop("'prior' is missing")
-  prior <- checkMultiPrior_covariance(substitute(prior),
-                                      log(length(x), 2))
+  prior <-
+    checkMultiPrior_covariance(substitute(prior), log2(length(x)))
 
   ## check nchains, burnin & update
   checkInput(nchains, "nchains", class = "integer", min = 2)

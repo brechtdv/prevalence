@@ -92,17 +92,53 @@ function(prior, h) {
   if (!any(c("{", "list") == first_element))
     stop("'prior' is not defined correctly")
 
+  ## based on h tests, these priors are expected
+  priors <- get_nodes(h)
+
   ## if prior is defined as a list
   ## note: list element names currently not taken in account!
   if (first_element == "list") {
     n <- length(prior) - 1
+
+    # check if length is as expected
+    if (n != length(priors))
+      stop("'prior' is not defined correctly; ",
+           "expected ", length(priors), " elements, ",
+           "got ", n)
+
+    # check if names are as expected
+    prior_names <- names(eval(prior))
+    priors_names <- gsub("\\]", "", gsub("\\[", "", priors))
+    if (!all(prior_names %in% priors_names))
+      stop("'prior' is not defined correctly; ",
+           "expected priors are ", paste(priors_names, collapse = ", "))
+    if (!all(priors_names %in% prior_names))
+      stop("'prior' is not defined correctly; ",
+           "expected priors are ", paste(priors_names, collapse = ", "))
+
+    # check priors and put in list
     priors_list <- vector("list", n)
+    for (i in seq(n)) {
+      type <-
+        ifelse(substr(prior_names[i], 1, 1) %in% c("a", "b"),
+               cov_depth(h, as.numeric(substr(prior_names[i], 2, 2))),
+               "prob")
+      priors_list[[i]] <-
+        list(prior_names[i],
+             checkSeSp(eval(parse(text = prior)[[i + 1]]),
+                       type = type))
+    }
+
+    ## re-arrange list elements if needed
+    order <- match(prior_names, priors_names)
+    priors_list <- priors_list[order]
+
+    ## rename priors (add brackets)
     for (i in seq(n))
-      priors_list[[i]] <- checkSeSp(eval(parse(text = prior)[[i + 1]]))
-  }
+      priors_list[[i]][[1]] <- priors[i]
 
   ## if prior is defined as a function
-  if (first_element == "{") {
+  } else if (first_element == "{") {
     n <- length(prior) - 1
     priors_list <- vector("list", n)
     for (i in seq(n)) {
@@ -110,14 +146,14 @@ function(prior, h) {
         explode(as.character(prior[[i + 1]]), "covariance")
     }
 
-    ## based on h tests, these priors are expected
-    priors <- get_nodes(h)
-
     ## check if all priors are defined
     priors_nodes <- sapply(priors_list, function(x) x[[1]])
-    if (!all(priors_nodes %in% priors)) {
-      stop("priors are not correctly specified")
-    }
+    if (!all(priors_nodes %in% priors))
+      stop("'prior' is not defined correctly; ",
+           "expected priors are ", paste(priors_names, collapse = ", "))
+    if (!all(priors %in% priors_nodes))
+      stop("'prior' is not defined correctly; ",
+           "expected priors are ", paste(priors_names, collapse = ", "))
 
     ## re-arrange list elements if needed
     order <- match(priors_nodes, priors)
@@ -126,6 +162,17 @@ function(prior, h) {
 
   ## return prior in list format
   return(priors_list)
+}
+
+
+## -------------------------------------------------------------------------#
+## Check depth of covariance parameter -------------------------------------#
+
+cov_depth <-
+function(h, x) {
+  n_test <- rev(seq(h, 2))
+  n_comb <- choose(h, n_test)
+  rep(n_test, n_comb)[x]
 }
 
 

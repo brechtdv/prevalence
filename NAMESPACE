@@ -1,6 +1,7 @@
 import(rjags)
 importFrom("methods", show)
 importFrom("graphics", plot)
+importFrom("coda", gelman.diag)
 importFrom("coda", gelman.plot)
 importFrom("coda", densplot)
 importFrom("coda", traceplot)

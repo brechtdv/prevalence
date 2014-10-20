@@ -6,7 +6,8 @@ Available functions:
 
 * `propCI`: Derive confidence intervals for a prevalence estimate
 * `truePrev`: Estimate TP from AP obtained by testing individual samples with a single test
-* `truePrevMulti`: Estimate TP from AP obtained by testing individual samples with multiple tests
+* `truePrevMulti`: Estimate TP from AP obtained by testing individual samples with multiple tests, using a conditional probability scheme
+* `truePrevMulti2`: Estimate TP from AP obtained by testing individual samples with multiple tests, using a covariance scheme
 * `truePrevPools`: Estimate TP from AP obtained by testing pooled samples
 * `betaPERT`: Calculate the parameters of a Beta-PERT distribution
 * `betaExpert`: Calculate the parameters of a Beta distribution based on expert opinion 

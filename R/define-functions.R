@@ -31,7 +31,7 @@ function(n) {
   ## define test status for all APs
   status <- matrix(nrow = 2 ^ n, ncol = n)
   for (i in seq(n)) {
-    status[, i] <- rep(c("-", "+"), each = 2 ^ (n - i), times = 2 ^ (i - 1))
+    status[, i] <- rep(c("+", "-"), each = 2 ^ (n - i), times = 2 ^ (i - 1))
   }
 
   ## paste output

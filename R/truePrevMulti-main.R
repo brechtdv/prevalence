@@ -24,7 +24,7 @@ function(x, n, prior, nchains = 2, burnin = 10000, update = 10000,
   checkInput(n, "n", class = "integer", minEq = 0)
   if (sum(x) != n) stop("'x' does not sum to 'n'")
   if ((log(length(x), 2) %% 1 != 0) | length(x) < 4) {
-    stop("'x' is not correctly specified; see ?definition_x")
+    stop("'x' is not correctly specified; see ?define_x")
   }
 
   ## check prior
@@ -62,7 +62,7 @@ function(x, n, prior, nchains = 2, burnin = 10000, update = 10000,
   checkInput(n, "n", class = "integer", minEq = 0)
   if (sum(x) != n) stop("'x' does not sum to 'n'")
   if ((log(length(x), 2) %% 1 != 0) | length(x) < 4) {
-    stop("'x' is not correctly specified; see ?definition_x")
+    stop("'x' is not correctly specified; see ?define_x")
   }
 
   ## check prior
@@ -94,18 +94,18 @@ truePrevMultinom_conditional <-
 function(x, n, prior, nchains, burnin, update, verbose) {
 
   ## create model
-  t <- log(length(x), 2)     # number of tests
-  ntheta <- 2 ^ (t + 1) - 1  # number of thetas
+  h <- log(length(x), 2)     # number of tests
+  ntheta <- 2 ^ (h + 1) - 1  # number of thetas
 
   model <- character()
 
   ## write model initiation
   model[1] <- "model {"
-  model[2] <- paste0("x[1:", 2 ^ t,
-                     "] ~ dmulti(AP[1:", 2 ^ t, "], n)")
+  model[2] <- paste0("x[1:", 2 ^ h,
+                     "] ~ dmulti(AP[1:", 2 ^ h, "], n)")
 
   ## write AP[] definitions in terms of theta[]
-  s <- multiModel_select(t)  # define theta construct for SE/SP
+  s <- multiModel_select(h)  # define theta construct for SE/SP
   p <- multiModel_probs(s)   # define AP[.] in terms of theta[.]
   model <- c(model, "", p, "")
 
@@ -116,8 +116,8 @@ function(x, n, prior, nchains, burnin, update, verbose) {
 
   ## write bayesP definition
   bayesP <-
-    c(paste0("x2[1:", (2^t), "] ~ dmulti(AP[1:", (2^t), "], n)"),
-      paste0("for (i in 1:", (2^t), ") {"),
+    c(paste0("x2[1:", (2^h), "] ~ dmulti(AP[1:", (2^h), "], n)"),
+      paste0("for (i in 1:", (2^h), ") {"),
       "d1[i] <- x[i] * log(max(x[i],1) / (AP[i]*n))",
       "d2[i] <- x2[i] * log(max(x2[i],1) / (AP[i]*n))",
       "}",
@@ -127,7 +127,7 @@ function(x, n, prior, nchains, burnin, update, verbose) {
   model <- c(model, "", bayesP)
 
   ## write SE[]/SP[] definition
-  model <- c(model, "", multiModel_SeSp(t))
+  model <- c(model, "", multiModel_SeSp(h))
 
   ## close model
   model <- c(model, "}")
@@ -144,7 +144,7 @@ function(x, n, prior, nchains, burnin, update, verbose) {
   ## get results!
   if (verbose) cat("JAGS progress:\n\n")
 
-  nodes <- paste0(c("SE", "SP"), rep(seq(t), each = 2))
+  nodes <- paste0(c("SE", "SP"), rep(seq(h), each = 2))
   nodes <- c("TP", nodes, "bayesP")
 
   JAGSout <- R2JAGS(model = model, data = data, inits = inits,
@@ -156,7 +156,7 @@ function(x, n, prior, nchains, burnin, update, verbose) {
   class(mcmc.list) <- c("list", "mcmc.list")
   names <- colnames(mcmc.list[[1]])
   mcmc.list_list <- list()
-  order <- c(length(names) - 1, c(t(cbind(1:t, 1:t+t))), length(names))
+  order <- c(length(names) - 1, c(t(cbind(1:h, 1:h+h))), length(names))
   for (i in seq_along(names))
     mcmc.list_list[[i]] <- mcmc.list[, order[i]]
   names(mcmc.list_list) <- names[order]
@@ -215,7 +215,6 @@ function(x, n, prior, nchains, burnin, update, verbose) {
 
   ## write prob_se[], prob_sp[]
   s <- multiModel_select(h)[[1]]
-  s <- s[rev(seq(nrow(s))), ]
 
   prob_se <- paste0("prob_se[", seq(nrow(s)), "] <-")
 

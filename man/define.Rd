@@ -1,21 +1,22 @@
-\name{definition}
-\alias{definition_x}
-\alias{definition_theta}
+\name{define}
+\alias{define_x}
+\alias{define_prior}
+\alias{define_prior2}
 
-\title{Definition of \code{truePrevMulti} model}
+\title{Definition of \code{truePrevMulti} and \code{truePrevMulti2} model}
 
 \description{
-These two utility functions can help to specify function
-\code{\link{truePrevMulti}}.
+These utility functions generate definitions for the test results and priors used by \code{\link{truePrevMulti}} and \code{\link{truePrevMulti2}}.
 }
 
 \usage{
-definition_x(n)
-definition_theta(n)
+define_x(h)
+define_prior(h)
+define_prior2(h)
 }
 
 \arguments{
-  \item{n}{
+  \item{h}{
     Number of tests
   }
 }
@@ -43,30 +44,26 @@ definition_theta(n)
 
 \references{
 \itemize{
-  \item{
-    Berkvens D, Speybroeck N, Praet N, Adel A, Lesaffre E (2006)
-    \emph{Estimating disease prevalence in a Bayesian framework using
-	probabilistic constraints.}
-	Epidemiology 17; 145-153
-	}
+  \item{Berkvens D, Speybroeck N, Praet N, Adel A, Lesaffre E (2006) \emph{Estimating disease prevalence in a Bayesian framework using probabilistic constraints.} Epidemiology 17; 145-153}
   }
 }
 
 \seealso{
-  \code{\link{truePrevMulti}}
+  \code{\link{truePrevMulti}}, \code{\link{truePrevMulti2}}
 }
 
 \examples{
 ## how is a 2-test model defined?
 
-definition_x(2)
+define_x(2)
 # Definition of the apparent test results, 'x', for 2 tests:
 # x[1] : T1-,T2- 
 # x[2] : T1-,T2+ 
 # x[3] : T1+,T2- 
 # x[4] : T1+,T2+
 
-definition_theta(2)
+define_prior(2)
+# Conditional probability scheme
 # Definition of the prior, 'theta', for 2 tests: 
 # theta[1] : P(D+) = TP
 # theta[2] : P(T1+|D+) = SE1
@@ -76,9 +73,20 @@ definition_theta(2)
 # theta[6] : P(T2-|D-,T1-)
 # theta[7] : P(T2-|D-,T1+)
 
+define_prior2(2)
+# Covariance scheme
+# Definition of the prior for 2 tests: 
+# TP :    True Prevalence 
+# SE[1] : Sensitity T1 
+# SE[2] : Sensitity T2 
+# SP[1] : Specificity T1 
+# SP[2] : Specificity T2 
+# a[1] :  Covariance(T1,T2|D+) 
+# b[1] :  Covariance(T1,T2|D-)
+
 ## how is a 3-test model defined?
 
-definition_x(3)
+define_x(3)
 # Definition of the apparent test results, 'x', for 3 tests:
 # x[1] : T1-,T2-,T3- 
 # x[2] : T1-,T2-,T3+ 
@@ -89,7 +97,8 @@ definition_x(3)
 # x[7] : T1+,T2+,T3- 
 # x[8] : T1+,T2+,T3+
 
-definition_theta(3)
+define_prior(3)
+# Conditional probability scheme
 # Definition of the prior, 'theta', for 3 tests: 
 # theta[1] : P(D+) = TP
 # theta[2] : P(T1+|D+) = SE1
@@ -106,4 +115,23 @@ definition_theta(3)
 # theta[13] : P(T3-|D-,T1-,T2+)
 # theta[14] : P(T3-|D-,T1+,T2-)
 # theta[15] : P(T3-|D-,T1+,T2+)
+
+define_prior2(3)
+# Covariance scheme
+# Definition of the prior for 3 tests: 
+# TP :    True Prevalence 
+# SE[1] : Sensitity T1 
+# SE[2] : Sensitity T2 
+# SE[3] : Sensitity T3 
+# SP[1] : Specificity T1 
+# SP[2] : Specificity T2 
+# SP[3] : Specificity T3 
+# a[1] :  Covariance(T1,T2|D+) 
+# a[2] :  Covariance(T1,T3|D+) 
+# a[3] :  Covariance(T2,T3|D+) 
+# a[4] :  Covariance(T1,T2,T3|D+) 
+# b[1] :  Covariance(T1,T2|D-) 
+# b[2] :  Covariance(T1,T3|D-) 
+# b[3] :  Covariance(T2,T3|D-) 
+# b[4] :  Covariance(T1,T2,T3|D-)
 }

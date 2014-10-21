@@ -17,4 +17,6 @@ prevalence 0.3.0
 
 * function `betaPERT` lost args `p` and `plot`
 
+* print method for objects of class `prev` no longer shows percentages
+
 * various code cleanups and small bug and typo fixes

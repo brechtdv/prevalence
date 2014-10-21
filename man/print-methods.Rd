@@ -7,7 +7,7 @@
 
 \description{Print objects of class \code{prev}}
 
-\usage{\S4method{print}{prev}(x, conf.level, dig = 3, \dots)}
+\usage{\S4method{print}{prev}(x, conf.level = 0.95, dig = 3, \dots)}
 
 \arguments{
   \item{x}{An object of class \code{prev}}

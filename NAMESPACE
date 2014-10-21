@@ -8,7 +8,7 @@ importFrom("coda", traceplot)
 importFrom("coda", autocorr.plot)
 
 export(truePrev, truePrevPools, truePrevMulti, truePrevMulti2,
-       definition_x, definition_theta,
+       define_x, define_prior, define_prior2,
        betaPERT, betaExpert, propCI)
 
 S3method(print, betaPERT)

@@ -18,16 +18,10 @@
 
 \section{Methods}{
   \describe{
-    \item{\code{signature(x = "prev")}}{
-      Print mean, median, mode and credibility interval of estimated true
-	  prevalence (and sensitivities and specificities, for \code{prev} objects
-	  created by \code{\link{truePrevMulti}}).
+    \item{\code{signature(x = "prev")}}{Print mean, median, mode, standard deviation and credibility interval of estimated true prevalence (and sensitivities and specificities, for \code{prev} objects created by \code{\link{truePrevMulti}} and \code{\link{truePrevMulti2}}).
 	  In addition, print \link[coda:gelman.diag]{Brooks-Gelman-Rubin statistic}
-	  and corresponding upper confidence limit. BGR values substantially above
-	  1 indicate lack of convergence. For for \code{prev} objects created by
-	  \code{\link{truePrevMulti}}, the Bayes-P statistic is also printed.
-	  Bayes-P should be as close to 0.5 as possible.
-    }
+	  and corresponding upper confidence limit, or multivariate BGR statistic for \code{prev} objects created by \code{\link{truePrevMulti}} and \code{\link{truePrevMulti2}}. BGR values substantially above 1 indicate lack of convergence.
+    For \code{prev} objects created by \code{\link{truePrevMulti}}, the Bayes-P statistic is also printed. Bayes-P should be as close to 0.5 as possible.}
   }
 }
 

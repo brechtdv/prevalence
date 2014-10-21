@@ -1,7 +1,7 @@
 \name{truePrevMulti}
 \alias{truePrevMulti}
 
-\title{Estimate true prevalence from individuals samples using multiple tests -- conditional probability scheme}
+\title{Estimate true prevalence from individuals samples using multiple tests}
 
 \description{
 Bayesian estimation of true prevalence from apparent prevalence obtained by
@@ -13,8 +13,9 @@ conditional probabilities.
 }
 
 \usage{
-truePrevMulti(x, n, prior, nchains = 2, burnin = 10000, update = 10000,
-              verbose = FALSE)
+truePrevMulti(x, n, prior,
+              conf.level = 0.95, nchains = 2, burnin = 5000, update = 10000,
+              verbose = FALSE, plot = FALSE)
 }
 
 \arguments{
@@ -29,13 +30,17 @@ truePrevMulti(x, n, prior, nchains = 2, burnin = 10000, update = 10000,
     The prior distribution for \code{theta};
 	see 'Details' below
   }
+  \item{conf.level}{
+    The confidence level used in the construction of the confidence interval;
+	defaults to 0.95
+  }
   \item{nchains}{
     The number of chains used in the estimation process;
 	must be \eqn{\ge 2}
   }
   \item{burnin}{
     The number of discarded model iterations;
-	defaults to 10000
+	defaults to 5000
   }
   \item{update}{
     The number of withheld model iterations;
@@ -44,18 +49,39 @@ truePrevMulti(x, n, prior, nchains = 2, burnin = 10000, update = 10000,
   \item{verbose}{
     Logical flag, indicating if JAGS process output should be printed to the
 	R console; defaults to \code{FALSE}}
+  \item{plot}{
+    Logical flag, indicating if diagnostic plots should be given;
+    defaults to \code{FALSE}}
 }
 
 \details{
-  \code{truePrevMulti} calls on \pkg{JAGS} via the \pkg{\link[rjags:rjags]{rjags}} package to estimate true prevalence from apparent prevalence in a Bayesian framework. \code{truePrevMulti} fits a multinomial model to the apparent test results obtained by testing individual samples with a given number of tests. To see the actual fitted model, see the model slot of the \code{\link[prevalence:prev-class]{prev}}-object.\cr
+  \code{truePrevMulti} calls on \pkg{JAGS}/\pkg{\link[rjags:rjags]{rjags}} 
+  to estimate the true prevalence from the apparent prevalence in a Bayesian
+  framework. \code{truePrevMulti} fits a multinomial model to the apparent
+  test results obtained by testing individual samples with a given number of
+  tests. To see the actual fitted model, see the model slot of the
+  \link[prevalence:prev-class]{prev}-object.\cr
 
-  The vector of apparent tests results, \code{x}, must contain the number of samples corresponding to each combination of test results. To see how this vector is defined for the number of tests \code{n} at hand, use \code{\link{define_x}}.
+  The vector of apparent tests results, \code{x}, must contain the number of
+  samples corresponding to each combination of test results. To see how this
+  vector is defined for the number of tests \code{n} at hand, use
+  \code{\link{definition_x}}.
   
-  The prior in the multinomial model consists of a vector \code{theta}, which holds values for the true prevalence (TP), the sensitivity and specificity of the first test (SE1, SP1), and the conditional dependencies between the results of the subsequent tests and the preceding one(s). To see how this vector is defined for the number of tests \code{n} at hand, use \code{\link{define_prior}}.\cr
+  The prior in the multinomial model consists of a vector \code{theta}, which
+  holds values for the true prevalence (TP), the sensitivity and specificity
+  of the first test (SE1, SP1), and the conditional dependencies between the
+  results of the subsequent tests and the preceding one(s). To see how this
+  vector is defined for the number of tests \code{n} at hand, use
+  \code{\link{definition_theta}}.\cr
   
-  The values of \code{prior} can be specified in two ways, referred to as BUGS-style and list-style, respectively. See also below for some examples.\cr
+  The values of \code{prior} can be specified in two ways, referred to as
+  BUGS-style and list-style, respectively. See also below for some examples.\cr
   
-  For BUGS-style specification, the values of \code{theta} should be given between curly brackets (i.e., \code{{}}), separated by line breaks. \code{theta} values can be specified to be deterministic (i.e., fixed), using the \code{<-} operator, or stochastic, using the \code{~} operator. In the latter case, the following distributions can be used:
+  For BUGS-style specification, the values of \code{theta} should be given
+  between curly brackets (i.e., \code{{}}), separated by line breaks.
+  \code{theta} values can be specified to be deterministic (i.e., fixed),
+  using the \code{<-} operator, or stochastic, using the \code{~} operator.
+  In the latter case, the following distributions can be used:
 
 \itemize{
   \item{\strong{Uniform:  }}{\code{dunif(min, max)}}
@@ -63,7 +89,8 @@ truePrevMulti(x, n, prior, nchains = 2, burnin = 10000, update = 10000,
   \item{\strong{Beta-PERT:  }}{\code{dpert(min, mode, max)}}
 }
   
-  Alternatively, \code{theta} values can  be specified in a \emph{named} \code{list()} as follows:
+  Alternatively, \code{theta} values can  be specified in a \emph{named}
+  \code{list()} as follows:
 
 \itemize{
   \item{\strong{Fixed:  }}{\code{list(dist = "fixed", par)}}
@@ -74,7 +101,7 @@ truePrevMulti(x, n, prior, nchains = 2, burnin = 10000, update = 10000,
     \code{'a'} denotes the pessimistic (minimum) estimate, \code{'m'} the most
 	likely estimate, and \code{'b'} the optimistic (maximum) estimate;\cr
     \code{'k'} denotes the scale parameter.\cr
-    See \code{\link{betaPERT}} for more information on Beta-PERT parametrization.}
+    See \link{betaPERT} for more information on Beta-PERT parametrization.}
   \item{\strong{Beta-Expert:  }}{\code{list(dist = "beta-expert", mode, mean,
   lower, upper, p)}\cr
     \code{'mode'} denotes the most likely estimate, \code{'mean'} the mean
@@ -83,16 +110,19 @@ truePrevMulti(x, n, prior, nchains = 2, burnin = 10000, update = 10000,
     \code{'p'} denotes the confidence level of the expert.\cr
 	Only \code{mode} or \code{mean} should be specified; \code{lower} and
 	\code{upper} can be specified together or alone.\cr
-    See \code{\link{betaExpert}} for more information on Beta-Expert parameterization.}
+    See \link{betaExpert} for more information on Beta-Expert parametrization.}
 }
 }
 
 \value{
-An object of class \code{\link[prevalence:prev-class]{prev}}.
+An object of class \link[prevalence:prev-class]{prev}.
 }
 
 \note{
-Markov chain Monte Carlo sampling in \code{truePrevMulti} is performed by \pkg{JAGS (Just Another Gibbs Sampler)} through the \pkg{\link[rjags:rjags]{rjags}} package. JAGS can be downloaded from \url{http://sourceforge.net/projects/mcmc-jags/}.
+Markov chain Monte Carlo sampling in \code{truePrevMulti} is performed by
+\pkg{JAGS (Just Another Gibbs Sampler)} through the
+\pkg{\link[rjags:rjags]{rjags}} package. JAGS can be downloaded from
+\url{http://sourceforge.net/projects/mcmc-jags/}.
 }
 
 \author{
@@ -124,17 +154,23 @@ Markov chain Monte Carlo sampling in \code{truePrevMulti} is performed by \pkg{J
 }
 
 \seealso{
-  \code{\link{define_x}}:
+  \code{\link{definition_x}}:
   how to define the vector of apparent test results \code{x}\cr
-  \code{\link{define_prior}}:
+  \code{\link{definition_theta}}:
   how to define the vector of \code{theta} values in \code{prior}\cr
   
-  \pkg{\link[coda:mcmc]{coda}} for various functions that can be applied to the \code{prev@mcmc} object\cr
-  \code{\link{truePrevMulti2}}: estimate true prevalence from apparent prevalence obtained by testing \emph{individual} samples with multiple tests, using a covariance scheme\cr
-  \code{\link{truePrev}}: estimate true prevalence from apparent prevalence obtained by testing \emph{individual} samples with a single test\cr
-  \code{\link{truePrevPools}}: estimate true prevalence from apparent prevalence obtained by testing \emph{pooled} samples\cr
-  \code{\link{betaPERT}}: calculate the parameters of a Beta-PERT distribution\cr
-  \code{\link{betaExpert}}: calculate the parameters of a Beta distribution based on expert opinion
+  \pkg{\link[coda:mcmc]{coda}}
+  for various functions that can be applied to the \code{prev@mcmc} object\cr
+  \code{\link{truePrev}}:
+  estimate true prevalence from apparent prevalence obtained by testing
+  \emph{individual} samples with a single test\cr
+  \code{\link{truePrevPools}}:
+  estimate true prevalence from apparent prevalence obtained by testing
+  \emph{pooled} samples\cr
+  \code{\link{betaPERT}}:
+  calculate the parameters of a Beta-PERT distribution\cr
+  \code{\link{betaExpert}}:
+  calculate the parameters of a Beta distribution based on expert opinion
 }
 
 \examples{
@@ -158,8 +194,8 @@ Markov chain Monte Carlo sampling in \code{truePrevMulti} is performed by \pkg{J
 ## ===================================================== ##
 
 ## how is the 2-test model defined?
-define_x(2)
-define_prior(2)
+definition_x(2)
+definition_theta(2)
 
 ## fit campylobacter 2-test model
 campy <-
@@ -243,8 +279,8 @@ autocorr.plot(campy)
 ## ===================================================== ##
 
 ## how is the 3-test model defined?
-define_x(3)
-define_prior(3)
+definition_x(3)
+definition_theta(3)
 
 ## fit giardia 3-test model
 giardia <-

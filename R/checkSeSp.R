@@ -153,9 +153,9 @@ function(x, type = "prob") {
 
   ## Beta-PERT distribution
   if (distr == "pert") {
-    if (length(x) > 5)
+    if (length(x) > 6)
       warning("A PERT distribution requires maximum 5 parameters")
-    if (length(x) < 3)
+    if (length(x) < 4)
       warning("A PERT distribution requires at least 3 parameters")
     if (is.null(x$a))
       stop("Parameter 'a' not specified")
@@ -179,9 +179,8 @@ function(x, type = "prob") {
     if (x$m > x$b)
       stop("'m' of PERT distribution cannot be larger than 'b'")
     pertK <- ifelse(is.null(x$k), 4, x$k)
-    pertP <- ifelse(is.null(x$p), .95, x$p)
     pertM <- ifelse(is.null(x$method), "classic", x$method)
-    param <- c(x$a, x$m, x$b, pertK, pertP)
+    param <- c(x$a, x$m, x$b, pertK)
     distr <- c(distr, pertM)
   }
 

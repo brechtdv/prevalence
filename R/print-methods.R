@@ -13,7 +13,7 @@
 ## S3 print method for class 'betaPERT' ------------------------------------#
 
 print.betaPERT <-
-function(x, conf.level, ...){
+function(x, conf.level = 0.95, ...){
   ## summary statistics
   beta_mean <- (x$alpha / (x$alpha + x$beta)) * (x$b - x$a) + x$a
   beta_var <- (x$alpha * x$beta * (x$b - x$a) ^ 2) /
@@ -21,7 +21,6 @@ function(x, conf.level, ...){
   beta_med <- qbeta(.5, x$alpha, x$beta) * (x$b - x$a) + x$a
 
   ## quantiles
-  if (missing(conf.level)) conf.level <- x$p
   ci <- c(0, conf.level) + (1 - conf.level) / 2
   beta_lwr <- qbeta(ci[1], x$alpha, x$beta) * (x$b - x$a) + x$a
   beta_upr <- qbeta(ci[2], x$alpha, x$beta) * (x$b - x$a) + x$a

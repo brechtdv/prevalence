@@ -4,11 +4,10 @@ function(f, x){
 
   if (x$d[1] == "pert"){
     pertK <- ifelse(is.null(x$p[4]), 4, x$p[4])
-    pertP <- ifelse(is.null(x$p[5]), 0.95, x$p[5])
     pertM <- x$d[2]
 
-    betaPERT <- betaPERT(a = x$p[1], m = x$p[2], b = x$p[3],
-      k = pertK, p = pertP, method = pertM, plot = FALSE)
+    betaPERT <-
+      betaPERT(a = x$p[1], m = x$p[2], b = x$p[3], k = pertK, method = pertM)
 
     if (pertM  == "branscum"){
       distSpec <-

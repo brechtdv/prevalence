@@ -1,6 +1,7 @@
 \name{betaExpert}
 \alias{betaExpert}
 \alias{print.betaExpert}
+\alias{plot.betaExpert}
 
 \title{Calculate the parameters of a Beta distribution based on expert information}
 

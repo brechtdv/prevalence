@@ -22,20 +22,19 @@ define_prior2(h)
 }
 
 \details{
-  Function \code{\link{truePrevMulti}} estimates true prevalence from
-  individual samples tested with \code{n} tests, using the approach of
-  Berkvens et al. (2006).\cr
-
-  The vector of apparent tests results, \code{x}, must contain the number of
-  samples corresponding to each combination of test results. The model assumes
-  that the first value corresponds to the number of samples that tested
-  negative on all tests and that the last value corresponds to the number
-  of samples that tested positive on all tests.\cr
+  The vector of apparent tests results, \code{x}, must contain the number of samples corresponding to each combination of test results. The models assume that the first value corresponds to the number of samples that tested positive on all tests and that the last value corresponds to the number of samples that tested negative on all tests.\cr
   
-  The prior in the multinomial model consists of a vector \code{theta}, which
-  holds values for the true prevalence (TP), the sensitivity and specificity
-  of the first test (SE1, SP1), and the conditional dependencies between the
-  results of the subsequent tests and the preceding one(s).
+  Function \code{\link{truePrevMulti}} estimates true prevalence from individual samples tested with \code{h} tests, using the approach of Berkvens et al. (2006). The prior in the multinomial model consists of a vector \code{theta}, which holds values for the true prevalence (TP), the sensitivity and specificity of the first test (SE1, SP1), and the conditional dependencies between the results of the subsequent tests and the preceding one(s). \code{\link{define_prior}} generates the definition of \code{prior} for \code{h} tests.
+  
+  Function \code{\link{truePrevMulti2}} implements and extends the approach described by Dendukuri and Joseph (2001), which uses a multinomial distribution to model observed test results, and in which conditional dependence between tests is modelled through covariances. Argument \code{prior} consists of prior distributions for:
+  \itemize{
+    \item{True Prevalence: \code{TP}}
+    \item{SEnsitivity of each individual test: vector \code{SE}}
+    \item{SPecificity of each individual test: vector \code{SP}}
+    \item{Conditional covariance of all possible test combinations given a truly positive disease status: vector \code{a}}
+    \item{Conditional covariance of all possible test combinations given a truly negative disease status: vector \code{b}}
+  }
+  \code{\link{define_prior2}} generates the definition of \code{prior} for \code{h} tests.
 }
 
 \author{
@@ -44,7 +43,8 @@ define_prior2(h)
 
 \references{
 \itemize{
-  \item{Berkvens D, Speybroeck N, Praet N, Adel A, Lesaffre E (2006) \emph{Estimating disease prevalence in a Bayesian framework using probabilistic constraints.} Epidemiology 17; 145-153}
+  \item{Berkvens D, Speybroeck N, Praet N, Adel A, Lesaffre E (2006) Estimating disease prevalence in a Bayesian framework using probabilistic constraints. \emph{Epidemiology} \strong{17}:145-153}
+    \item{Dendukuri N, Joseph L (2001) Bayesian approaches to modeling the conditional dependence between multiple diagnostic tests. \emph{Biometrics} \strong{57}:158-167}
   }
 }
 

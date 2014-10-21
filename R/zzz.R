@@ -15,7 +15,7 @@ setMethod("show", "prev",
 )
 
 setMethod("print", "prev",
-  function(x, conf.level = 0.95, dig = 3, ...){
+  function(x, conf.level = 0.95, dig = 3, ...) {
     ## guess which function generated 'x'
     multi <- length(x@par$prior) > 2
 
@@ -26,7 +26,7 @@ setMethod("print", "prev",
     summary_row <- x@par$nchains + 1
     out <- t(sapply(stats, function(x) x[summary_row, c(1:4, 6:7)]))
 
-    if (multi){
+    if (multi) {
       h <- log(length(x@par$x), 2)
       method <-
         ifelse(x@par$prior[[1]][[1]] == "TP", "covariance", "conditional")
@@ -71,13 +71,13 @@ setMethod("print", "prev",
 )
 
 setMethod("summary", "prev",
-  function(object, conf.level = 0.95){
+  function(object, conf.level = 0.95) {
     ## derive lower and upper confidence level
-    if (sum(object@par$x) == 0){
+    if (sum(object@par$x) == 0) {
       p <- c(0, conf.level)
     } else if (ifelse(length(object@par$x) == 1,
                  object@par$x == object@par$n,
-                 sum(object@par$x) == length(object@par$x))){
+                 sum(object@par$x) == length(object@par$x))) {
       p <- c(1 - conf.level, 1)
     } else {
       p <- c((1 - conf.level) / 2,
@@ -87,7 +87,7 @@ setMethod("summary", "prev",
 
     ## guess which function generated 'object'
     multi <- length(object@par$prior) > 2
-    if (multi){
+    if (multi) {
       nodes <- names(object@mcmc)[-length(names(object@mcmc))]
     } else {
       nodes <- "TP"
@@ -96,7 +96,7 @@ setMethod("summary", "prev",
     stat_list <- vector("list", length(nodes))
     names(stat_list) <- nodes
 
-    for (node in seq_along(nodes)){
+    for (node in seq_along(nodes)) {
       ## define 'stats' matrix
       n <- object@par$nchains
       stats <- matrix(ncol = 8, nrow = n + 1)
@@ -105,14 +105,14 @@ setMethod("summary", "prev",
       dimnames(stats)[[1]] <- c(paste(rep("chain", n), seq(n)), "all chains")
 
       ## extract mcmc samples for this node
-      if (multi){
+      if (multi) {
         mcmc <- object@mcmc[[node]]
       } else {
         mcmc <- object@mcmc
       }
 
       ## calculate summary statistics per chain
-      for (i in seq(object@par$nchains)){
+      for (i in seq(object@par$nchains)) {
         stats[i, 1] <- mean(mcmc[[i]], na.rm = TRUE)
         stats[i, 2] <- median(mcmc[[i]], na.rm = TRUE)
         d <- density(mcmc[[i]], na.rm = TRUE)
@@ -150,7 +150,7 @@ setMethod("summary", "prev",
 )
 
 setMethod("plot", "prev",
-  function(x, y = NULL, ...){
+  function(x, y = NULL, ...) {
     ## define 'y' if missing
     if (missing(y)) y <- "TP"
 
@@ -162,13 +162,16 @@ setMethod("plot", "prev",
 
     ## guess which function generated 'x'
     multi <- length(x@par$prior) > 2
-    if (multi){
-      n <- log(length(x@par$x), 2)
+    if (multi) {
+      h <- log2(length(x@par$x))
+
+      if (length(x@mcmc) == 1 + length(get_nodes(h))) {
+        choices <- get_nodes(h)
+      } else {
       choices <-
-        c("TP",
-          paste(rep(c("SE", "SP"), each = n),
-                seq(n),
-                sep = ""))
+        c("TP", paste0(rep(c("SE", "SP"), each = h), seq(h)))
+      }
+
       y <- match.arg(y, choices)
       mcmc <- x@mcmc[[y]]
     } else {

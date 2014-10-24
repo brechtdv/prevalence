@@ -21,4 +21,4 @@ IMPORTANT: the truePrev functions in the prevalence package call on JAGS (Just A
 
 Function `truePrev` is also available as an online Shiny application: http://users.ugent.be/~bdvleess/R/prevalence/shiny/
 
-More information and tutorials are available at http://users.ugent.be/~bdvleess/R/prevalence/
+More information and tutorials are available at http://prevalence.cbra.be/

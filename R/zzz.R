@@ -136,8 +136,14 @@ setMethod("summary", "prev",
 
       stats[i, 1] <- mean(y, na.rm = TRUE)
       stats[i, 2] <- median(y, na.rm = TRUE)
-      d <- density(y, na.rm = TRUE)
-      stats[i, 3] <- d$x[which.max(d$y)]
+
+      if (var(y) > 0) {
+        d <- density(y, na.rm = TRUE)
+        stats[i, 3] <- d$x[which.max(d$y)]
+      } else {
+        stats[i, 3] <- y[1]
+      }
+
       stats[i, 4] <- sd(y, na.rm = TRUE)
       stats[i, 5] <- var(y, na.rm = TRUE)
       stats[i, 6] <- quantile(y, probs = p[1], na.rm = TRUE)

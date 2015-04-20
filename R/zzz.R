@@ -37,9 +37,6 @@ setMethod("print", "prev",
                                paste0(rep(c("SE", "SP"), times = h),
                                       rep(seq(h), each = 2))),
                covariance = get_nodes(h))
-
-    } else {
-      rownames(out) <- "True prevalence"
     }
 
     ## get BGR statistic
@@ -52,20 +49,13 @@ setMethod("print", "prev",
     print(round(out, dig), ...)
 
     ## print diagnostic information
-    if (multi) {
-      cat("\nMultivariate BGR statistic = ", round(BGR$mpsrf, 4), "\n", sep = "")
-      cat("BGR values substantially above 1 indicate lack of convergence\n")
+    cat("\nMultivariate BGR statistic = ", round(BGR$mpsrf, 4), "\n", sep = "")
+    cat("BGR values substantially above 1 indicate lack of convergence\n")
 
-      if (method == "conditional") {
-        cat("Bayes-P statistic =", round(bayesP, 2), "\n")
-        cat("Bayes-P values substantially different from 0.5",
-            "indicate lack of convergence\n")
-      }
-
-    } else {
-      cat("\nBGR statistic = ", round(BGR[[1]], 4),
-          " (upper CL = ", round(BGR[[2]], 4), ")\n", sep = "")
-      cat("BGR values substantially above 1 indicate lack of convergence\n")
+    if (multi && method == "conditional") {
+      cat("Bayes-P statistic =", round(bayesP, 2), "\n")
+      cat("Bayes-P values substantially different from 0.5",
+          "indicate lack of convergence\n")
     }
   }
 )
@@ -94,7 +84,7 @@ setMethod("summary", "prev",
       nodes <- names(object@mcmc)[-length(names(object@mcmc))]
 
     } else {
-      nodes <- c("TP", "SE", "SP")
+      nodes <- names(object@mcmc)
     }
 
     stat_list <- vector("list", length(nodes))
@@ -147,8 +137,8 @@ setMethod("summary", "prev",
       stat_list[[node]] <- stats
     }
 
-    if (!multi)
-      stat_list <- stat_list[[1]]
+#    if (!multi)
+#      stat_list <- stat_list[[1]]
 
     ## return resulting 'stat' list
     return(stat_list)
@@ -167,7 +157,7 @@ setMethod("plot", "prev",
     on.exit(devAskNewPage(ask_old))
 
     ## guess which function generated 'x'
-    multi <- length(x@par$prior) > 2
+    multi <- is.null(x@par$SE)
     if (multi) {
       h <- log2(length(x@par$x))
 
@@ -180,8 +170,11 @@ setMethod("plot", "prev",
 
       y <- match.arg(y, choices)
       mcmc <- x@mcmc[[y]]
+
     } else {
-      mcmc <- x@mcmc
+      choices <- c("TP", "SE", "SP")
+      y <- match.arg(y, choices)
+      mcmc <- x@mcmc[[y]]
     }
 
     ## 4 plots
@@ -214,12 +207,7 @@ setMethod("plot", "prev",
 setMethod("as.matrix", "prev",
   function(x, iters = FALSE, chains = FALSE) {
     ## convert MCMC to matrix
-    if (is.null(x@par$SE)) {
-      mx <- sapply(x@mcmc, unlist)
-
-    } else {
-      mx <- base::as.matrix(x@mcmc)
-    }
+    mx <- sapply(x@mcmc, unlist)
 
     ## add iteration numbers
     if (iters)

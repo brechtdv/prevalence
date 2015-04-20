@@ -1,5 +1,6 @@
 \name{convert-methods}
 \docType{methods}
+\alias{convert-methods}
 \alias{as.matrix-methods}
 \alias{as.matrix,prev-method}
 

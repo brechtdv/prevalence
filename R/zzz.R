@@ -49,8 +49,18 @@ setMethod("print", "prev",
     print(round(out, dig), ...)
 
     ## print diagnostic information
-    cat("\nMultivariate BGR statistic = ", round(BGR$mpsrf, 4), "\n", sep = "")
-    cat("BGR values substantially above 1 indicate lack of convergence\n")
+    # if only one node: mpsrf == NULL
+    if (is.null(BGR$mpsrf)) {
+      cat("\nBGR statistic = ", round(BGR[[1]][, 1], 4),
+          " (upper CL = ", round(BGR[[1]][, 2], 4), ")\n", sep = "")
+      cat("BGR values substantially above 1 indicate lack of convergence\n")
+
+    # if multiple nodes
+    } else {
+      cat("\nMultivariate BGR statistic = ",
+          round(BGR$mpsrf, 4), "\n", sep = "")
+      cat("BGR values substantially above 1 indicate lack of convergence\n")
+    }
 
     if (multi && method == "conditional") {
       cat("Bayes-P statistic =", round(bayesP, 2), "\n")

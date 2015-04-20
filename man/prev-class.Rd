@@ -38,7 +38,7 @@ Brecht Devleesschauwer <\email{brechtdv@gmail.com}>
 
 \seealso{
   \code{\link{truePrev}}, \code{\link{truePrevMulti}}, \code{\link{truePrevMulti2}}, \code{\link{truePrevPools}}\cr
-  \code{\link{show-methods}}, \code{\link{print-methods}}, \code{\link{summary-methods}}, \code{\link{plot-methods}}, \code{\link{plot-methods-coda}}
+  \code{\link{show-methods}}, \code{\link{print-methods}}, \code{\link{summary-methods}}, \code{\link{convert-methods}}, \code{\link{plot-methods}}, \code{\link{plot-methods-coda}}
 }
 
 \examples{

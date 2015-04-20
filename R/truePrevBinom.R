@@ -11,8 +11,9 @@ function(x, n, Se, Sp, prior,
   model <- c(model, writeSeSp("SE", Se))
   model <- c(model, writeSeSp("SP", Sp))
 
-  model <- c(model,
-    paste("TP ~ dbeta(", prior[1], ", ", prior[2], ")", sep = ""))
+  model <-
+    c(model,
+      paste0("TP ~ dbeta(", prior[1], ", ", prior[2], ")"))
 
   model <- c(model, "}")
 
@@ -29,14 +30,20 @@ function(x, n, Se, Sp, prior,
 
   JAGSout <- R2JAGS(model = model, data = data, inits = inits,
                     nchains = nchains, burnin = burnin, update = update,
-                    nodes = "TP", verbose = verbose)
+                    nodes = c("TP", "SE", "SP"), verbose = verbose)
 
   mcmc.list <- JAGSout$mcmc.list
   class(mcmc.list) <- c("list", "mcmc.list")
 
+  ## deviance information criterion
   DIC <- JAGSout$dic
-  BGR <- c(gelman.diag(mcmc.list, autoburnin = FALSE)$psrf)
 
+  ## brooks-gelman-rubin diagnostic
+  is_stoch <- apply(mcmc.list[[1]], 2, var) > 0
+  mcmc.list_stoch <- mcmc.list[, is_stoch]
+  BGR <- c(gelman.diag(mcmc.list_stoch, autoburnin = FALSE)$psrf)
+
+  ## create new 'prev' object
   out <-
     new("prev",
         par = list(x = x, n = n, SE = Se, SP = Sp, prior = prior,

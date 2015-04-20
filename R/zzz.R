@@ -17,7 +17,7 @@ setMethod("show", "prev",
 setMethod("print", "prev",
   function(x, conf.level = 0.95, dig = 3, ...) {
     ## guess which function generated 'x'
-    multi <- length(x@par$prior) > 2
+    multi <- is.null(x@par$SE)
 
     ## get summary statistics from 'summary()'
     stats <- summary(x, conf.level)
@@ -88,7 +88,8 @@ setMethod("summary", "prev",
     ciLabel <- paste0(100 * p, "%")
 
     ## guess which function generated 'object'
-    multi <- length(object@par$prior) > 2
+    multi <- is.null(object@par$SE)
+
     if (multi) {
       nodes <- names(object@mcmc)[-length(names(object@mcmc))]
 

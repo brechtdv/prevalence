@@ -34,14 +34,21 @@ function(x, n, Se, Sp, prior,
 
   mcmc.list <- JAGSout$mcmc.list
   class(mcmc.list) <- c("list", "mcmc.list")
+  nodes <- colnames(mcmc.list[[1]])
+  mcmc.list_list <- list()
+  for (i in seq_along(nodes))
+    mcmc.list_list[[i]] <- mcmc.list[, i]
+  names(mcmc.list_list) <- nodes
 
-  ## deviance information criterion
+  ## define diagnostics
+  # deviance information criterion
   DIC <- JAGSout$dic
 
-  ## brooks-gelman-rubin diagnostic
-  is_stoch <- apply(mcmc.list[[1]], 2, var) > 0
-  mcmc.list_stoch <- mcmc.list[, is_stoch]
-  BGR <- c(gelman.diag(mcmc.list_stoch, autoburnin = FALSE)$psrf)
+  # brooks-gelman-rubin diagnostic
+  # exclude fixed nodes
+  exclude <- which(apply(mcmc.list[[1]], 2, sd) == 0)
+  gelman.diag(mcmc.list[, -exclude])
+  BGR <- gelman.diag(mcmc.list[, -exclude])
 
   ## create new 'prev' object
   out <-
@@ -50,9 +57,9 @@ function(x, n, Se, Sp, prior,
                    nchains = nchains, burnin = burnin, update = update,
                    inits = inits),
         model = model,
-        mcmc = mcmc.list,
+        mcmc = mcmc.list_list,
         diagnostics = list(DIC = DIC,
-                           BGR = data.frame(mean = BGR[1], upperCL = BGR[2])))
+                           BGR = BGR))
 
   return(out)
 }

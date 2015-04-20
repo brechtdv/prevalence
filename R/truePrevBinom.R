@@ -47,8 +47,11 @@ function(x, n, Se, Sp, prior,
   # brooks-gelman-rubin diagnostic
   # exclude fixed nodes
   exclude <- which(apply(mcmc.list[[1]], 2, sd) == 0)
-  gelman.diag(mcmc.list[, -exclude])
-  BGR <- gelman.diag(mcmc.list[, -exclude])
+  if (length(exclude) > 0) {
+    BGR <- gelman.diag(mcmc.list[, -exclude])
+  } else {
+    BGR <- gelman.diag(mcmc.list)
+  }
 
   ## create new 'prev' object
   out <-

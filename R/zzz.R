@@ -199,7 +199,7 @@ setMethod("plot", "prev",
     title(main = paste("Autocorrelation", of_y),
           cex.main = cex.main, line = line)
 
-    if (multi & !ask_new)
+    if (!ask_new)
       title(y, outer = TRUE, line = -1.5)
   }
 )

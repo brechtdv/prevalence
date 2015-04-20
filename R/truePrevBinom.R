@@ -34,11 +34,13 @@ function(x, n, Se, Sp, prior,
 
   mcmc.list <- JAGSout$mcmc.list
   class(mcmc.list) <- c("list", "mcmc.list")
-  nodes <- colnames(mcmc.list[[1]])
-  mcmc.list_list <- list()
-  for (i in seq_along(nodes))
+
+  nodes <- colnames(mcmc.list[[1]])                      # extract node names
+  mcmc.list_list <- list()                               # initiate list
+  for (i in seq_along(nodes))                            # assign nodes
     mcmc.list_list[[i]] <- mcmc.list[, i]
-  names(mcmc.list_list) <- nodes
+  names(mcmc.list_list) <- nodes                         # assign node names
+  mcmc.list_list <- mcmc.list_list[c("TP", "SE", "SP")]  # reorder elements
 
   ## define diagnostics
   # deviance information criterion

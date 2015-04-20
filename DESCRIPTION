@@ -1,10 +1,10 @@
 Package: prevalence
 Type: Package
-Title: The prevalence package
+Title: Tools for Prevalence Assessment Studies
 Version: 0.4.0
 Date: 2015-04-20
 Authors@R: c(person("Brecht", "Devleesschauwer",
-             role = c("aut", "cre"), email = "Brecht.Devleesschauwer@UGent.be"),
+             role = c("aut", "cre"), email = "brechtdv@gmail.com"),
              person("Paul", "Torgerson", role = "aut"),
              person("Johannes", "Charlier", role = "aut"),
              person("Bruno", "Levecke", role = "aut"),
@@ -20,7 +20,7 @@ Author: Brecht Devleesschauwer [aut, cre], Paul Torgerson [aut],
         Dirk Berkvens [aut], Niko Speybroeck [aut]
 Maintainer: Brecht Devleesschauwer <brechtdv@gmail.com>
 BugReports: https://github.com/brechtdv/prevalence/issues
-Description: Tools for prevalence assessment studies. IMPORTANT: the truePrev functions in the prevalence package call on JAGS (Just Another Gibbs Sampler), which therefore has to be available on the user's system. JAGS can be downloaded from http://mcmc-jags.sourceforge.net/.
+Description: The prevalence package provides Frequentist and Bayesian methods for prevalence assessment studies. IMPORTANT: the truePrev functions in the prevalence package call on JAGS (Just Another Gibbs Sampler), which therefore has to be available on the user's system. JAGS can be downloaded from http://mcmc-jags.sourceforge.net/.
 Depends: R (>= 3.0.0), rjags, coda, methods
 SystemRequirements: JAGS (>= 3.2.0) (see http://mcmc-jags.sourceforge.net) 
 License: GPL (>= 2)

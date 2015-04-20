@@ -75,10 +75,12 @@ setMethod("summary", "prev",
     ## derive lower and upper confidence level
     if (sum(object@par$x) == 0) {
       p <- c(0, conf.level)
+
     } else if (ifelse(length(object@par$x) == 1,
                  object@par$x == object@par$n,
                  sum(object@par$x) == length(object@par$x))) {
       p <- c(1 - conf.level, 1)
+
     } else {
       p <- c((1 - conf.level) / 2,
               1 - (1 - conf.level) / 2)
@@ -89,8 +91,9 @@ setMethod("summary", "prev",
     multi <- length(object@par$prior) > 2
     if (multi) {
       nodes <- names(object@mcmc)[-length(names(object@mcmc))]
+
     } else {
-      nodes <- "TP"
+      nodes <- c("TP", "SE", "SP")
     }
 
     stat_list <- vector("list", length(nodes))
@@ -105,18 +108,20 @@ setMethod("summary", "prev",
       dimnames(stats)[[1]] <- c(paste(rep("chain", n), seq(n)), "all chains")
 
       ## extract mcmc samples for this node
-      if (multi) {
-        mcmc <- object@mcmc[[node]]
-      } else {
-        mcmc <- object@mcmc
-      }
+      mcmc <- object@mcmc[[node]]
 
       ## calculate summary statistics per chain
       for (i in seq(object@par$nchains)) {
         stats[i, 1] <- mean(mcmc[[i]], na.rm = TRUE)
         stats[i, 2] <- median(mcmc[[i]], na.rm = TRUE)
-        d <- density(mcmc[[i]], na.rm = TRUE)
-        stats[i, 3] <- d$x[which.max(d$y)]
+
+        if (var(mcmc[[i]]) > 0) {
+          d <- density(mcmc[[i]], na.rm = TRUE)
+          stats[i, 3] <- d$x[which.max(d$y)]
+        } else {
+          stats[i, 3] <- mcmc[[i]][1]
+        }
+
         stats[i, 4] <- sd(mcmc[[i]], na.rm = TRUE)
         stats[i, 5] <- var(mcmc[[i]], na.rm = TRUE)
         stats[i, 6] <- quantile(mcmc[[i]], probs = p[1], na.rm = TRUE)
@@ -202,5 +207,28 @@ setMethod("plot", "prev",
 
     if (multi & !ask_new)
       title(y, outer = TRUE, line = -1.5)
+  }
+)
+
+setMethod("as.matrix", "prev",
+  function(x, iters = FALSE, chains = FALSE) {
+    ## convert MCMC to matrix
+    if (is.null(x@par$SE)) {
+      mx <- sapply(x@mcmc, unlist)
+
+    } else {
+      mx <- base::as.matrix(x@mcmc)
+    }
+
+    ## add iteration numbers
+    if (iters)
+      mx <- cbind(ITER = rep(seq(x@par$update), x@par$nchains), mx)
+
+    ## add chain numbers
+    if (chains)
+      mx <- cbind(CHAIN = rep(seq(x@par$nchains), each = x@par$update), mx)
+
+    ## return matrix
+    return(mx)
   }
 )

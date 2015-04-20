@@ -147,9 +147,6 @@ setMethod("summary", "prev",
       stat_list[[node]] <- stats
     }
 
-#    if (!multi)
-#      stat_list <- stat_list[[1]]
-
     ## return resulting 'stat' list
     return(stat_list)
   }

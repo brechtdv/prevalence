@@ -53,7 +53,7 @@ Branscum AJ, Gardner IA, Johnson WO (2005) Estimation of diagnostic-test sensiti
 }
 
 \author{
-\email{Brecht.Devleesschauwer@UGent.be}
+Brecht Devleesschauwer <\email{brechtdv@gmail.com}>
 }
 
 \seealso{

@@ -33,7 +33,7 @@ Objects of class \code{"prev"} contain the following four slots:
 }
 
 \author{
-\email{Brecht.Devleesschauwer@UGent.be}
+Brecht Devleesschauwer <\email{brechtdv@gmail.com}>
 }
 
 \seealso{

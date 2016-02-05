@@ -15,10 +15,17 @@ The prevalence package provides Frequentist and Bayesian methods useful in preva
 
 #### Install
 
-* the latest released version on [CRAN](https://cran.r-project.org/package=prevalence): `install.packages("prevalence")`
-* the latest development version: `devtools::install_github("brechtdv/prevalence")`
+To download and install the latest released version from [CRAN](https://cran.r-project.org/package=prevalence):
+```r
+install.packages("prevalence")
+```
 
-IMPORTANT: the truePrev functions in the prevalence package call on JAGS (Just Another Gibbs Sampler), which therefore has to be available on the user's system. JAGS can be downloaded from http://mcmc-jags.sourceforge.net/.
+The download and install the latest development version from GitHub:
+```r
+devtools::install_github("brechtdv/prevalence")
+```
+
+**IMPORTANT**: the truePrev functions in the prevalence package call on JAGS (Just Another Gibbs Sampler), which therefore has to be available on the user's system. JAGS can be downloaded from http://mcmc-jags.sourceforge.net/.
 
 #### More
 

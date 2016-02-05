@@ -22,6 +22,7 @@ importFrom(coda, gelman.plot)
 importFrom(coda, densplot)
 importFrom(coda, traceplot)
 importFrom(coda, autocorr.plot)
+importFrom(coda, HPDinterval)
 
 export(truePrev)
 export(truePrevPools)

@@ -1,3 +1,4 @@
+[![Travis-CI Build Status](https://travis-ci.org/brechtdv/prevalence.svg?branch=master)](https://travis-ci.org/brechtdv/prevalence)
 ## prevalence 0.4.0
 
 The prevalence package provides Frequentist and Bayesian methods useful in prevalence assessment studies. Several methods are available for estimating True Prevalence (TP) from Apparent Prevalence (AP).

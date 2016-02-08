@@ -26,7 +26,7 @@ betaPERT(a, m, b, k = 4, method = c("classic", "vose"))
   \item{k}{Scale parameter}
   \item{method}{\code{"classic"} or \code{"vose"}; see details below}
   
-  \item{x}{Object of class \code{betaExpert}}
+  \item{x}{Object of class \code{betaPERT}}
   \item{y}{Currently ignored}
   \item{conf.level}{Confidence level used in printing quantiles of resulting Beta-PERT distribution}
   \item{\dots}{Other arguments to pass to function \code{print} and \code{plot}}

@@ -24,7 +24,7 @@ To download and install the latest released version from [CRAN](https://cran.r-p
 install.packages("prevalence")
 ```
 
-The download and install the latest development version from GitHub:
+To download and install the latest development version from GitHub:
 ```r
 devtools::install_github("brechtdv/prevalence")
 ```

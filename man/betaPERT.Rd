@@ -86,7 +86,7 @@ Brecht Devleesschauwer <\email{brechtdv@gmail.com}>
 }
 
 \note{
-The \pkg{\href{http://cran.r-project.org/web/packages/mc2d/}{mc2d}} package provides 
+The \pkg{\href{https://cran.r-project.org/package=mc2d}{mc2d}} package provides 
 the probability density function, cumulative distribution function, quantile function and random number generation function 
 for the PERT distribution, parametrized by the \code{"vose"} method.
 }

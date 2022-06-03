@@ -20,10 +20,10 @@ Author: Brecht Devleesschauwer [aut, cre], Paul Torgerson [aut],
         Dirk Berkvens [aut], Niko Speybroeck [aut]
 Maintainer: Brecht Devleesschauwer <brechtdv@gmail.com>
 BugReports: https://github.com/brechtdv/prevalence/issues
-Description: The prevalence package provides Frequentist and Bayesian methods for prevalence assessment studies. IMPORTANT: the truePrev functions in the prevalence package call on JAGS (Just Another Gibbs Sampler), which therefore has to be available on the user's system. JAGS can be downloaded from http://mcmc-jags.sourceforge.net/.
+Description: The prevalence package provides Frequentist and Bayesian methods for prevalence assessment studies. IMPORTANT: the truePrev functions in the prevalence package call on JAGS (Just Another Gibbs Sampler), which therefore has to be available on the user's system. JAGS can be downloaded from <https://mcmc-jags.sourceforge.io/>.
 Depends: R (>= 4.0.0)
 Imports: methods, utils, stats, graphics, grDevices, coda, rjags
-SystemRequirements: JAGS (>= 4.0.0) (see http://mcmc-jags.sourceforge.net) 
+SystemRequirements: JAGS (>= 4.0.0) (see https://mcmc-jags.sourceforge.io/) 
 License: GPL (>= 2)
 URL: http://prevalence.cbra.be/
 LazyLoad: yes

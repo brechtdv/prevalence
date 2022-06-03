@@ -1,8 +1,7 @@
 ## prevalence
 
-[![Travis-CI Build Status](https://travis-ci.org/brechtdv/prevalence.svg?branch=master)](https://travis-ci.org/brechtdv/prevalence)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/prevalence)](http://cran.r-project.org/package=prevalence)
-[![Cranlogs Downloads](http://cranlogs.r-pkg.org/badges/grand-total/prevalence)](http://cran.r-project.org/package=prevalence)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/prevalence)](https://cran.r-project.org/package=prevalence)
+[![Cranlogs Downloads](http://cranlogs.r-pkg.org/badges/grand-total/prevalence)](https://cran.r-project.org/package=prevalence)
 
 The prevalence package provides Frequentist and Bayesian methods useful in prevalence assessment studies. Several methods are available for estimating True Prevalence (TP) from Apparent Prevalence (AP).
 
